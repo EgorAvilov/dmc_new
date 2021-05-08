@@ -8,6 +8,8 @@ import com.example.dmc.mapper.DataSetMapper;
 import com.example.dmc.repository.DataSetRepository;
 import com.example.dmc.service.DataSetService;
 import com.example.dmc.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Service
 public class DataSetServiceImpl implements DataSetService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataSetServiceImpl.class);
     private final DataSetRepository dataSetRepository;
     private final UserService userService;
     private final DataSetMapper dataSetMapper;
@@ -30,6 +33,7 @@ public class DataSetServiceImpl implements DataSetService {
 
     @Override
     public DataSetDto create(MultipartFile dataGetter, MultipartFile dataSplitter, MultipartFile dataSaver, String link) throws IOException {
+        LOGGER.info("Create dataset");
         User user = userService.getCurrentUser();
         Task dataGetterTask = new Task();
         dataGetterTask.setUser(user);
@@ -64,6 +68,7 @@ public class DataSetServiceImpl implements DataSetService {
 
     @Override
     public List<DataSetDto> findAll() {
+        LOGGER.info("Find all datasets");
         User user = userService.getCurrentUser();
         List<DataSet> dataSets = dataSetRepository.findAllByUserId(user.getId());
         return dataSetMapper.entityToDto(dataSets);

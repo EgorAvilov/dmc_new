@@ -9,6 +9,8 @@ import com.example.dmc.mapper.TaskMapper;
 import com.example.dmc.repository.TaskRepository;
 import com.example.dmc.service.TaskService;
 import com.example.dmc.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +21,7 @@ import java.util.Objects;
 
 @Service
 public class TaskServiceImpl implements TaskService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskServiceImpl.class);
     private final TaskRepository taskRepository;
     private final UserService userService;
     private final TaskMapper taskMapper;
@@ -32,8 +35,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task create(MultipartFile file, Type inputType, Type outputType) throws IOException {
+        LOGGER.info("Create task: " + file.getName());
         String PYTHON_CONTENT_TYPE = "text/x-python";
         if (!Objects.equals(file.getContentType(), PYTHON_CONTENT_TYPE)) {
+            LOGGER.error("Wrong content type of file. Should be .py: " + file.getName());
             throw new ServiceException("Wrong content type of file. Should be .py");
         }
         User user = userService.getCurrentUser();
@@ -52,6 +57,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDto> findAll() {
+        LOGGER.info("Find all tasks");
         User user = userService.getCurrentUser();
         List<Task> tasks = taskRepository.findAllByUserId(user.getId());
         return taskMapper.entityToDto(tasks);

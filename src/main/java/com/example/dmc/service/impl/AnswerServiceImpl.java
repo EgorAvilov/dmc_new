@@ -28,6 +28,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public Answer create(String json) throws IOException {
+        LOGGER.info("Create answer:" + json);
         AnswerDto answerDto = answerMapper.toJavaObject(json);
         Answer answer = answerMapper.dtoToEntity(answerDto);
         return answerRepository.save(answer);
@@ -35,6 +36,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public Answer findById(String id) {
+        LOGGER.info("Find answer by id:" + id);
         return answerRepository.findById(id);
     }
 

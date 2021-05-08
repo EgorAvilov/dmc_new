@@ -11,6 +11,8 @@ import com.example.dmc.repository.BlockRepository;
 import com.example.dmc.repository.DataSetRepository;
 import com.example.dmc.service.BlockService;
 import com.example.dmc.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import static com.example.dmc.config.RabbitConfig.TOPIC_EXCHANGE_NAME;
 
 @Service
 public class BlockServiceImpl implements BlockService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BlockServiceImpl.class);
     private final AmqpTemplate template;
     private final BlockMapper blockMapper;
     private final AlgorithmRepository algorithmRepository;
@@ -42,6 +45,7 @@ public class BlockServiceImpl implements BlockService {
 
     @Override
     public Block create(Block block) throws IOException {
+        LOGGER.info("Create block");
         Block finalBlock = block;
         User user = userService.getCurrentUser();
         Algorithm algorithm = algorithmRepository.findById(block.getAlgorithm()
@@ -60,6 +64,7 @@ public class BlockServiceImpl implements BlockService {
 
         String json = blockMapper.toJSON(block);
         block = blockRepository.save(block);
+        LOGGER.info("Send block to node: " + block.getId());
         template.convertAndSend(TOPIC_EXCHANGE_NAME, ROUTING_KEY_PUT_TASK, json);
         return block;
     }
