@@ -1,0 +1,23 @@
+2021-05-08 23:57:07 INFO  Version:21 - HV000001: Hibernate Validator 6.1.7.Final
+2021-05-08 23:57:07 INFO  DmcApplication:55 - Starting DmcApplication using Java 12.0.2 on DESKTOP-KMMBP5Q with PID 13768 (D:\dmc_new\target\classes started by Lenovo in D:\dmc_new)
+2021-05-08 23:57:07 INFO  DmcApplication:662 - No active profile set, falling back to default profiles: default
+2021-05-08 23:57:09 INFO  RepositoryConfigurationDelegate:128 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-05-08 23:57:09 INFO  RepositoryConfigurationDelegate:188 - Finished Spring Data repository scanning in 104 ms. Found 6 JPA repository interfaces.
+2021-05-08 23:57:09 INFO  PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376 - Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@49e2b3c5' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-05-08 23:57:09 INFO  PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376 - Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-05-08 23:57:10 INFO  TomcatWebServer:108 - Tomcat initialized with port(s): 8080 (http)
+2021-05-08 23:57:10 INFO  ServletWebServerApplicationContext:289 - Root WebApplicationContext: initialization completed in 2776 ms
+2021-05-08 23:57:10 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-05-08 23:57:10 INFO  Version:44 - HHH000412: Hibernate ORM core version 5.4.29.Final
+2021-05-08 23:57:10 INFO  Version:56 - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-05-08 23:57:10 INFO  HikariDataSource:110 - HikariPool-1 - Starting...
+2021-05-08 23:57:11 INFO  HikariDataSource:123 - HikariPool-1 - Start completed.
+2021-05-08 23:57:11 INFO  Dialect:175 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2021-05-08 23:57:12 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-05-08 23:57:12 INFO  LocalContainerEntityManagerFactoryBean:437 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-05-08 23:57:13 WARN  JpaBaseConfiguration$JpaWebConfiguration:221 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-05-08 23:57:14 INFO  DefaultSecurityFilterChain:51 - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7925e772, org.springframework.security.web.context.SecurityContextPersistenceFilter@1f3f0d25, org.springframework.security.web.header.HeaderWriterFilter@1c149539, org.springframework.web.filter.CorsFilter@365a4b9b, org.springframework.security.web.authentication.logout.LogoutFilter@2b569858, com.example.dmc.security.jwt.JwtTokenFilter@240e61, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4ef0bc5b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@26d02dc6, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@76efa2b7, org.springframework.security.web.session.SessionManagementFilter@2c1a0f82, org.springframework.security.web.access.ExceptionTranslationFilter@27c49f54]
+2021-05-08 23:57:14 INFO  ThreadPoolTaskExecutor:181 - Initializing ExecutorService 'applicationTaskExecutor'
+2021-05-08 23:57:14 INFO  WelcomePageHandlerMapping:57 - Adding welcome page template: index
+2021-05-08 23:57:14 INFO  TomcatWebServer:220 - Tomcat started on port(s): 8080 (http) with context path ''
+2021-05-08 23:57:15 INFO  DmcApplication:61 - Started DmcApplication in 8.281 seconds (JVM running for 10.177)
