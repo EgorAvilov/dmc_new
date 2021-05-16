@@ -40,7 +40,6 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDto authenticationDto) {
         try {

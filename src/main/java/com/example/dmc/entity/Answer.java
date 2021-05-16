@@ -1,11 +1,9 @@
 package com.example.dmc.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -24,4 +22,8 @@ public class Answer {
     @Column(name = "message")
     private String message;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 }

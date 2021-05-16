@@ -1,10 +1,9 @@
 package com.example.dmc.service.impl;
 
-import com.example.dmc.dto.DataSetDto;
 import com.example.dmc.entity.DataSet;
 import com.example.dmc.entity.Task;
 import com.example.dmc.entity.User;
-import com.example.dmc.mapper.DataSetMapper;
+import com.example.dmc.exception.ServiceException;
 import com.example.dmc.repository.DataSetRepository;
 import com.example.dmc.service.DataSetService;
 import com.example.dmc.service.UserService;
@@ -16,61 +15,118 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class DataSetServiceImpl implements DataSetService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataSetServiceImpl.class);
     private final DataSetRepository dataSetRepository;
     private final UserService userService;
-    private final DataSetMapper dataSetMapper;
+
+    private final String PYTHON_CONTENT_TYPE = "text/x-python";
 
     @Autowired
-    public DataSetServiceImpl(DataSetRepository dataSetRepository, UserService userService, DataSetMapper dataSetMapper) {
+    public DataSetServiceImpl(DataSetRepository dataSetRepository, UserService userService) {
         this.dataSetRepository = dataSetRepository;
         this.userService = userService;
-        this.dataSetMapper = dataSetMapper;
     }
 
     @Override
-    public DataSetDto create(MultipartFile dataGetter, MultipartFile dataSplitter, MultipartFile dataSaver, String link) throws IOException {
+    public DataSet create(MultipartFile dataGetter, MultipartFile dataSplitter, MultipartFile dataSaver, String link, String name) throws IOException {
         LOGGER.info("Create dataset");
+        dataGetterCheck(dataGetter);
+        dataSplitterCheck(dataSplitter);
+        dataSaverCheck(dataSaver);
+        linkCheck(link);
+        nameCheck(name);
+
         User user = userService.getCurrentUser();
+        DataSet dataSet = new DataSet();
+        dataSet.setName(name);
+        dataSet.setUser(user);
+        if (dataSetExists(dataSet)) {
+            throw new ServiceException("Data set with such name already exists: " + dataSet.getName());
+        }
         Task dataGetterTask = new Task();
-        dataGetterTask.setUser(user);
         dataGetterTask.setFileName(dataGetter
                 .getOriginalFilename());
         dataGetterTask.setFile(dataGetter
                 .getBytes());
 
         Task dataSplitterTask = new Task();
-        dataSplitterTask.setUser(user);
         dataSplitterTask.setFileName(dataSplitter
                 .getOriginalFilename());
         dataSplitterTask.setFile(dataSplitter
                 .getBytes());
 
         Task dataSaverTask = new Task();
-        dataSaverTask.setUser(user);
         dataSaverTask.setFileName(dataSaver
                 .getOriginalFilename());
         dataSaverTask.setFile(dataSaver
                 .getBytes());
 
-        DataSet dataSet = new DataSet();
         dataSet.setLink(link);
         dataSet.setDataGetter(dataGetterTask);
         dataSet.setDataSplitter(dataSplitterTask);
         dataSet.setDataSaver(dataSaverTask);
 
-        dataSet = dataSetRepository.save(dataSet);
-        return dataSetMapper.entityToDto(dataSet);
+        return dataSetRepository.save(dataSet);
     }
 
     @Override
-    public List<DataSetDto> findAll() {
+    public boolean dataSetExists(DataSet dataSet) {
+        LOGGER.info("Check for for existing dataSet:" + dataSet.getName());
+        return dataSetRepository.countAllByNameAndUserId(dataSet.getName(), dataSet.getUser()
+                                                                                   .getId()) != 0;
+    }
+
+    @Override
+    public List<DataSet> findAll() {
         LOGGER.info("Find all datasets");
         User user = userService.getCurrentUser();
-        List<DataSet> dataSets = dataSetRepository.findAllByUserId(user.getId());
-        return dataSetMapper.entityToDto(dataSets);
+        return dataSetRepository.findAllByUserId(user.getId());
+
+    }
+
+    private void dataGetterCheck(MultipartFile dataGetter) {
+        if (dataGetter == null) {
+            throw new ServiceException("dataGetter can't be null");
+        }
+        if (!Objects.equals(dataGetter.getContentType(), PYTHON_CONTENT_TYPE)) {
+            LOGGER.error("Wrong content type of dataGetter. Should be .py: " + dataGetter.getName());
+            throw new ServiceException("Wrong content type of dataGetter. Should be .py");
+        }
+    }
+
+    private void dataSplitterCheck(MultipartFile dataSplitter) {
+        if (dataSplitter == null) {
+            throw new ServiceException("dataSplitter can't be null");
+        }
+        if (!Objects.equals(dataSplitter.getContentType(), PYTHON_CONTENT_TYPE)) {
+            LOGGER.error("Wrong content type of dataSplitter. Should be .py: " + dataSplitter.getName());
+            throw new ServiceException("Wrong content type of dataSplitter. Should be .py");
+        }
+    }
+
+    private void dataSaverCheck(MultipartFile dataSaver) {
+        if (dataSaver == null) {
+            throw new ServiceException("dataSaver can't be null");
+        }
+        if (!Objects.equals(dataSaver.getContentType(), PYTHON_CONTENT_TYPE)) {
+            LOGGER.error("Wrong content type of dataSaver. Should be .py: " + dataSaver.getName());
+            throw new ServiceException("Wrong content type of dataSaver. Should be .py");
+        }
+    }
+
+    private void linkCheck(String link) {
+        if (link == null) {
+            throw new ServiceException("Link can't be null");
+        }
+    }
+
+    private void nameCheck(String name) {
+        if (name == null) {
+            throw new ServiceException("name can't be null");
+        }
     }
 }

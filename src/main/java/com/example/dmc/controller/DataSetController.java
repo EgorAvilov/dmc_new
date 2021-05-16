@@ -15,6 +15,7 @@ import java.io.IOException;
 @RequestMapping(value = "/api/datasets")
 @PreAuthorize("hasAuthority('USER')")
 public class DataSetController {
+
     private final DataSetService dataSetService;
 
     @Autowired
@@ -23,11 +24,12 @@ public class DataSetController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity create(@RequestPart("dataGetter") MultipartFile dataGetter,
-                                 @RequestPart("dataSplitter") MultipartFile dataSplitter,
-                                 @RequestPart("dataSaver") MultipartFile dataSaver,
-                                 @RequestParam("link") String link) throws IOException {
-        return new ResponseEntity<>(dataSetService.create(dataGetter, dataSplitter, dataSaver, link), HttpStatus.CREATED);
+    public ResponseEntity create(@RequestPart(value = "dataGetter", required = false) MultipartFile dataGetter,
+                                 @RequestPart(value = "dataSplitter", required = false) MultipartFile dataSplitter,
+                                 @RequestPart(value = "dataSaver", required = false) MultipartFile dataSaver,
+                                 @RequestParam(value = "link", required = false) String link,
+                                 @RequestParam(value = "name", required = false) String name) throws IOException {
+        return new ResponseEntity<>(dataSetService.create(dataGetter, dataSplitter, dataSaver, link, name), HttpStatus.CREATED);
     }
 
     @GetMapping

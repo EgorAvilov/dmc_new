@@ -2,12 +2,14 @@ package com.example.dmc.controller;
 
 import com.example.dmc.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "/api/node")
+@RequestMapping(value = "/api/answers")
 public class AnswerController {
 
     private final AnswerService answerService;
@@ -17,14 +19,19 @@ public class AnswerController {
         this.answerService = answerService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public void create(@RequestBody String json) throws IOException {
         answerService.create(json);
     }
 
-    @GetMapping("/get_stata")
-    public void get_stats(@RequestBody String id) {
-        System.out.println(id);
+    @GetMapping(value = "{id}")
+    public ResponseEntity findById(@PathVariable String id) throws IOException {
+        return new ResponseEntity<>(answerService.findById(id), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity findAll() {
+        return new ResponseEntity<>(answerService.findAll(), HttpStatus.OK);
     }
 }
 

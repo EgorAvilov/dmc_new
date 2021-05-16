@@ -1,6 +1,5 @@
 package com.example.dmc.service;
 
-import com.example.dmc.dto.TaskDto;
 import com.example.dmc.entity.Task;
 import com.example.dmc.entity.Type;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,8 +10,8 @@ import java.util.List;
 public interface TaskService {
 
     Task create(MultipartFile file,
-                      Type inputType,
-                      Type outputType) throws IOException;
+                List<Type> inputType,
+                List<Type> outputType) throws IOException;
 
-    List<TaskDto> findAll();
+    List<Task> findAll();
 }

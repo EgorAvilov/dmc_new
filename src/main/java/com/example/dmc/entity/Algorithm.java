@@ -8,6 +8,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +30,7 @@ public class Algorithm {
     @JsonIgnore
     private User user;
 
-    @OneToMany(orphanRemoval = true)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
 
     @Column(name = "name")

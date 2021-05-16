@@ -18,8 +18,4 @@ public class BlockMapper {
         return mapper.writeValueAsString(block);
     }
 
-    public Block toJavaObject(String json) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(json, Block.class);
-    }
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,19 +36,39 @@ public class AlgorithmServiceImpl implements AlgorithmService {
         LOGGER.info("Create algorithm:" + algorithm.getName());
         User user = userService.getCurrentUser();
         algorithm.setUser(user);
+        if (algorithm.getTasks()
+                     .size() == 0) {
+            LOGGER.error("Tasks list can't be empty");
+            throw new ServiceException("Tasks list can't be empty");
+        }
         if (algorithmExists(algorithm)) {
             LOGGER.error("Algorithm with such name already exists: " + algorithm.getName());
             throw new ServiceException("Algorithm with such name already exists: " + algorithm.getName());
         }
-
         List<Task> tasks = algorithm.getTasks()
                                     .stream()
                                     .map(Task::getId)
+                                    .filter(Objects::nonNull)
                                     .map((taskId) -> taskRepository.findById(taskId)
                                                                    .orElseThrow(() -> new ServiceException("No Task with such id: " + taskId)))
                                     .collect(Collectors.toList());
+        if (tasks.size() == 0) {
+            LOGGER.error("Tasks list can't be empty");
+            throw new ServiceException("Tasks list can't be empty");
+        }
+
+        for(int i=0;i<tasks.size()-1;i++){
+            if(!tasks.get(i).getOutputType().equals(tasks.get(i+1).getInputType())){
+                throw new ServiceException("Output type of task "+ tasks.get(i).getId()+" should be equal to input type of task "+ tasks.get(i+1).getId());
+            }
+        }
+
+
+
+
+
         algorithm.setTasks(tasks);
-        return algorithmRepository.saveAndFlush(algorithm);
+        return algorithmRepository.save(algorithm);
     }
 
     @Override
@@ -60,6 +81,9 @@ public class AlgorithmServiceImpl implements AlgorithmService {
     @Override
     public List<Algorithm> findAll() {
         LOGGER.info("Find all algorithms");
-        return null;
+        User user = userService.getCurrentUser();
+        return algorithmRepository.findAllByUserId(user.getId());
     }
+
+
 }

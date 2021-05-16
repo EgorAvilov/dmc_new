@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import static com.example.dmc.config.RabbitConfig.ROUTING_KEY_PUT_TASK;
@@ -48,14 +49,14 @@ public class BlockServiceImpl implements BlockService {
         LOGGER.info("Create block");
         Block finalBlock = block;
         User user = userService.getCurrentUser();
-        Algorithm algorithm = algorithmRepository.findById(block.getAlgorithm()
-                                                                .getId())
-                                                 .orElseThrow(() -> new ServiceException("No algorithm with such id: " + finalBlock.getAlgorithm()
-                                                                                                                                   .getId()));
-        DataSet dataSet = dataSetRepository.findById(block.getDataSet()
-                                                          .getId())
-                                           .orElseThrow(() -> new ServiceException("No data set with such id: " + finalBlock.getDataSet()
-                                                                                                                            .getId()));
+        Algorithm algorithm = algorithmRepository.findByNameAndUserId(block.getAlgorithm()
+                                                                .getName(),user.getId())
+                                                 .orElseThrow(() -> new ServiceException("No algorithm with such name: " + finalBlock.getAlgorithm()
+                                                                                                                                   .getName()));
+        DataSet dataSet = dataSetRepository.findByNameAndUserId(block.getDataSet()
+                                                          .getName(),user.getId())
+                                           .orElseThrow(() -> new ServiceException("No data set with such name: " + finalBlock.getDataSet()
+                                                                                                                            .getName()));
         block.setId(UUID.randomUUID()
                         .toString());
         block.setAlgorithm(algorithm);
@@ -65,7 +66,20 @@ public class BlockServiceImpl implements BlockService {
         String json = blockMapper.toJSON(block);
         block = blockRepository.save(block);
         LOGGER.info("Send block to node: " + block.getId());
-        template.convertAndSend(TOPIC_EXCHANGE_NAME, ROUTING_KEY_PUT_TASK, json);
+        new Thread(() ->  template.convertAndSend(TOPIC_EXCHANGE_NAME, ROUTING_KEY_PUT_TASK, json)).start();
         return block;
+    }
+
+    @Override
+    public List<Block> findAll() {
+        LOGGER.info("Find all blocks");
+        User user = userService.getCurrentUser();
+        return blockRepository.findAllByUserId(user.getId());
+    }
+
+    @Override
+    public Block findById(String id) {
+        LOGGER.info("Find block by id: "+ id);
+        return blockRepository.findById(id);
     }
 }

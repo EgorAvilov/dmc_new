@@ -1,5 +1,6 @@
 package com.example.dmc.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,7 +14,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
+    @JsonIgnore
     private Long id;
 
     @Column(name = "username")
@@ -25,5 +27,6 @@ public class User {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private List<Role> userRole = new ArrayList<>();
 }

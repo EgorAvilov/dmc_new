@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class AnswerDto {
     @JsonProperty("taskId")
-    private String blockId;
+    private String id;
 
     @JsonProperty("status")
     private String status;

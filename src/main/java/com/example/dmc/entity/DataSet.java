@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "data_sets")
 public class DataSet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,20 +21,24 @@ public class DataSet {
     @NotBlank(message = "File link can't be empty.")
     private String link;
 
+    @Column(name = "name")
+    @NotBlank(message = "Name of data set can't be empty.")
+    private String name;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "gette_id")
     private Task dataGetter;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "splitter_id")
     private Task dataSplitter;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "saver_id")
     private Task dataSaver;
 }

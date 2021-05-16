@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/api/algorithms")
 @PreAuthorize("hasAuthority('USER')")
@@ -21,7 +23,7 @@ public class AlgorithmController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody Algorithm algorithm) {
+    public ResponseEntity create(@RequestBody @Valid Algorithm algorithm) {
         return new ResponseEntity<>(algorithmService.create(algorithm), HttpStatus.CREATED);
     }
     @GetMapping

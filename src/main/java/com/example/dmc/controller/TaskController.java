@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/tasks")
 @PreAuthorize("hasAuthority('USER')")
 public class TaskController {
+
     private final TaskService taskService;
 
     @Autowired
@@ -23,10 +25,10 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity create(@RequestPart("file") MultipartFile file,
-                                 @RequestParam("inputType") Type inputType,
-                                 @RequestParam("outputType") Type outputType) throws IOException {
+    @PostMapping
+    public ResponseEntity create(@RequestPart(value = "file", required = false) MultipartFile file,
+                                 @RequestParam(value = "inputType", required = false) List<Type> inputType,
+                                 @RequestParam(value = "outputType", required = false) List<Type> outputType) throws IOException {
         return new ResponseEntity<>(taskService.create(file, inputType, outputType), HttpStatus.CREATED);
     }
 

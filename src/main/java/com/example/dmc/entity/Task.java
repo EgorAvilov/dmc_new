@@ -1,6 +1,8 @@
 package com.example.dmc.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "tasks")
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

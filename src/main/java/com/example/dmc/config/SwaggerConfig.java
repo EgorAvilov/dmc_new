@@ -23,7 +23,7 @@ public class SwaggerConfig {
                 "API fro DMC project",
                 "1.0",
                 "Terms of service",
-                new Contact("Sallo Szrajbman", "www.baeldung.com", "salloszraj@gmail.com"),
+                new Contact("Egor Avilov", "https://github.com/Kyrsor/dmc_new", "egoravilov99@gmail.com"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList());
@@ -32,12 +32,14 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+
                 .apiInfo(apiInfo())
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
+
                 .build();
     }
 
