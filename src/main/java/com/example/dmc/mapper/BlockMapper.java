@@ -17,5 +17,4 @@ public class BlockMapper {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.writeValueAsString(block);
     }
-
 }

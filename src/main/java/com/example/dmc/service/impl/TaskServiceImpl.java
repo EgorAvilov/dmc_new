@@ -37,7 +37,6 @@ public class TaskServiceImpl implements TaskService {
         fileCheck(file);
         inputTypeCheck(inputType);
         outputTypeCheck(outputType);
-
         User user = userService.getCurrentUser();
         Task task = new Task();
         task.setUser(user);
@@ -63,7 +62,6 @@ public class TaskServiceImpl implements TaskService {
         if (file == null) {
             throw new ServiceException("File can't be null");
         }
-
         String PYTHON_CONTENT_TYPE = "text/x-python";
         if (!Objects.equals(file.getContentType(), PYTHON_CONTENT_TYPE)) {
             LOGGER.error("Wrong content type of file. Should be .py: " + file.getOriginalFilename());

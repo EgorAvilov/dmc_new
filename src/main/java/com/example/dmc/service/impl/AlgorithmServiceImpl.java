@@ -57,14 +57,16 @@ public class AlgorithmServiceImpl implements AlgorithmService {
             throw new ServiceException("Tasks list can't be empty");
         }
 
-        for(int i=0;i<tasks.size()-1;i++){
-            if(!tasks.get(i).getOutputType().equals(tasks.get(i+1).getInputType())){
-                throw new ServiceException("Output type of task "+ tasks.get(i).getId()+" should be equal to input type of task "+ tasks.get(i+1).getId());
+        for (int i = 0; i < tasks.size() - 1; i++) {
+            if (!tasks.get(i)
+                      .getOutputType()
+                      .equals(tasks.get(i + 1)
+                                   .getInputType())) {
+                throw new ServiceException("Output type of task " + tasks.get(i)
+                                                                         .getId() + " should be equal to input type of task " + tasks.get(i + 1)
+                                                                                                                                     .getId());
             }
         }
-
-
-
 
 
         algorithm.setTasks(tasks);

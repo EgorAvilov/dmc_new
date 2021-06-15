@@ -50,13 +50,13 @@ public class BlockServiceImpl implements BlockService {
         Block finalBlock = block;
         User user = userService.getCurrentUser();
         Algorithm algorithm = algorithmRepository.findByNameAndUserId(block.getAlgorithm()
-                                                                .getName(),user.getId())
+                                                                           .getName(), user.getId())
                                                  .orElseThrow(() -> new ServiceException("No algorithm with such name: " + finalBlock.getAlgorithm()
-                                                                                                                                   .getName()));
+                                                                                                                                     .getName()));
         DataSet dataSet = dataSetRepository.findByNameAndUserId(block.getDataSet()
-                                                          .getName(),user.getId())
+                                                                     .getName(), user.getId())
                                            .orElseThrow(() -> new ServiceException("No data set with such name: " + finalBlock.getDataSet()
-                                                                                                                            .getName()));
+                                                                                                                              .getName()));
         block.setId(UUID.randomUUID()
                         .toString());
         block.setAlgorithm(algorithm);
@@ -66,7 +66,7 @@ public class BlockServiceImpl implements BlockService {
         String json = blockMapper.toJSON(block);
         block = blockRepository.save(block);
         LOGGER.info("Send block to node: " + block.getId());
-        new Thread(() ->  template.convertAndSend(TOPIC_EXCHANGE_NAME, ROUTING_KEY_PUT_TASK, json)).start();
+        new Thread(() -> template.convertAndSend(TOPIC_EXCHANGE_NAME, ROUTING_KEY_PUT_TASK, json)).start();
         return block;
     }
 
@@ -79,7 +79,7 @@ public class BlockServiceImpl implements BlockService {
 
     @Override
     public Block findById(String id) {
-        LOGGER.info("Find block by id: "+ id);
+        LOGGER.info("Find block by id: " + id);
         return blockRepository.findById(id);
     }
 }

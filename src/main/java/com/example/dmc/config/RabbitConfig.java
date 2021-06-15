@@ -14,7 +14,7 @@ public class RabbitConfig {
     public static final String TOPIC_EXCHANGE_NAME = "rpc";
     public static final String ROUTING_KEY_PUT_TASK = "rpc.request.balancer.put_task";
     public static final String ROUTING_KEY_GET_STATISTICS = "rpc.request.balancer.get_statistics";
-    private static final String CONNECTION_NAME = "192.168.43.55";
+    private static final String CONNECTION_NAME = "192.168.0.120";
 
     @Bean
     public ConnectionFactory connectionFactory() {

@@ -16,5 +16,4 @@ public interface AlgorithmRepository extends JpaRepository<Algorithm, Long> {
 
     Optional<Algorithm> findByNameAndUserId(String name, Long userId);
 
-    Algorithm findByNameAndUserId(String name);
 }

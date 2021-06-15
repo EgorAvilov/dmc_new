@@ -26,6 +26,7 @@ public class AlgorithmController {
     public ResponseEntity create(@RequestBody @Valid Algorithm algorithm) {
         return new ResponseEntity<>(algorithmService.create(algorithm), HttpStatus.CREATED);
     }
+
     @GetMapping
     public ResponseEntity findAll() {
         return new ResponseEntity<>(algorithmService.findAll(), HttpStatus.OK);
